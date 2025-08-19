@@ -13,5 +13,6 @@ namespace FeeTypeForm.Repositories
         DataTable GetAll();
         void AddFeeType(FeeType feetype); 
         void UpdateFeeType(FeeType feetype);
+        void DeleteFeetype(int FeeTypeID);
     }
 }

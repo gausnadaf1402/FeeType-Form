@@ -62,5 +62,19 @@ namespace FeeTypeForm.Repositories
                 }
             }
         }
+
+        public void DeleteFeetype(int FeeTypeID)
+        {
+            string connectionstring = "Data Source=.\\sqlexpress;Initial Catalog=StudManagement;Integrated Security=True;Encrypt=True;TrustServerCertificate=True";
+            using (var con = new SqlConnection(connectionstring))
+            {
+                con.Open();
+                using (var cmd = new SqlCommand("DELETE FROM dbo.MstFeeTypes WHERE FeeTypeID = @FeeTypeID", con))
+                {
+                    cmd.Parameters.AddWithValue("@FeeTypeID", FeeTypeID);
+                    cmd.ExecuteNonQuery();
+                }
+            }
+        }
     }
 }

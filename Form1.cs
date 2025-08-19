@@ -233,5 +233,28 @@ namespace FeeTypeForm
                 MessageBox.Show($"Error updating record: {ex.Message}");
             }
         }
+
+        private void btnDelete_Click(object sender, EventArgs e)
+        {
+            if (selectedGradeID < 0)
+            {
+                MessageBox.Show("Please select a Fee Type to delete.");
+                return;
+            }
+            try
+            {
+                _FeeTyperepo.DeleteFeetype(selectedGradeID);
+                MessageBox.Show("Record deleted successfully.");
+                ClearForm();
+                selectedGradeID = -1; // Reset the selected ID
+                // Refresh the DataGridView
+                var dt = _FeeTyperepo.GetAll();
+                dataGridView1.DataSource = dt;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Error deleting record: {ex.Message}");
+            }
+        }
     }
 }

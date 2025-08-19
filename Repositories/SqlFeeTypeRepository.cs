@@ -1,4 +1,5 @@
-﻿using FeeTypeForm.Models;
+﻿using FeeTypeForm.Logins;
+using FeeTypeForm.Models;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -28,8 +29,8 @@ namespace FeeTypeForm.Repositories
             using (var con = new SqlConnection(connectionstring))
             {
                 con.Open();
-                using (var cmd = new SqlCommand("INSERT INTO dbo.MstFeeTypes (FeeName, Amount,ApplicableGradeID,ActiveStatus, CreatedDate, ModifiedDate) " +
-                                                              "VALUES (@FeeName, @Amount,@ApplicableGradeID, @ActiveStatus, @CreatedDate,@ModifiedDate)", con))
+                using (var cmd = new SqlCommand("INSERT INTO dbo.MstFeeTypes (FeeName, Amount,ApplicableGradeID,ActiveStatus, CreatedDate,CreatedBy, ModifiedDate,ModifiedBy) " +
+                                                              "VALUES (@FeeName, @Amount,@ApplicableGradeID, @ActiveStatus, @CreatedDate,@CreatedBy,@ModifiedDate,@ModifiedBy)", con))
                 {
                     cmd.Parameters.AddWithValue("@FeeName", feetype.FeeName);
                     cmd.Parameters.AddWithValue("@Amount", feetype.Amount);
@@ -37,8 +38,8 @@ namespace FeeTypeForm.Repositories
                     cmd.Parameters.AddWithValue("@ActiveStatus", feetype.ActiveStatus);
                     cmd.Parameters.AddWithValue("@CreatedDate", DateTime.Now);
                     cmd.Parameters.AddWithValue("@ModifiedDate", DateTime.Now);
-                    //cmd.Parameters.AddWithValue("@CreatedBy", Session.CurrentUser); // Assuming a default created by value
-                    //cmd.Parameters.AddWithValue("@ModifiedBy", DBNull.Value); // Assuming a default modified by value
+                    cmd.Parameters.AddWithValue("@CreatedBy", Session.CurrentUser); // Assuming a default created by value
+                    cmd.Parameters.AddWithValue("@ModifiedBy", DBNull.Value); // Assuming a default modified by value
                     cmd.ExecuteNonQuery();
                 }
             }
@@ -50,14 +51,14 @@ namespace FeeTypeForm.Repositories
             using (var con = new SqlConnection(connectionstring))
             {
                 con.Open();
-                using (var cmd = new SqlCommand("UPDATE dbo.MstFeeTypes SET FeeName=@FeeName, Amount=@Amount, ApplicableGradeID=@GradeID,ActiveStatus=@ActiveStatus WHERE FeeTypeID=@FeeTypeID", con))
+                using (var cmd = new SqlCommand("UPDATE dbo.MstFeeTypes SET FeeName=@FeeName, Amount=@Amount, ApplicableGradeID=@GradeID,ActiveStatus=@ActiveStatus,ModifiedBy=@ModifiedBy WHERE FeeTypeID=@FeeTypeID", con))
                 {
                     cmd.Parameters.AddWithValue("@FeeTypeID", feetype.FeeTypeID);
                     cmd.Parameters.AddWithValue("@FeeName", feetype.FeeName);
                     cmd.Parameters.AddWithValue("@Amount", feetype.Amount);
                     cmd.Parameters.AddWithValue("@GradeID", feetype.ApplicableGradeID);
                     cmd.Parameters.AddWithValue("@ActiveStatus", feetype.ActiveStatus);
-                    //cmd.Parameters.AddWithValue("@ModifiedBy", Session.CurrentUser); // Assuming a default modified by value
+                    cmd.Parameters.AddWithValue("@ModifiedBy", Session.CurrentUser); // Assuming a default modified by value
                     cmd.ExecuteNonQuery();
                 }
             }
